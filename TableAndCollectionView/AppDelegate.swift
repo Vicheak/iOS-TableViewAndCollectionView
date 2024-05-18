@@ -9,28 +9,73 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
+    
+    var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        window = UIWindow(frame: UIScreen.main.bounds)
+        
+        let tabBarController = UITabBarController()
+        
+        let tableNotesListNavigationController = UINavigationController(rootViewController: TableNotesListViewController())
+        tableNotesListNavigationController.tabBarItem = UITabBarItem(title: "Notes", image: UIImage(systemName: "note.text"), tag: 0)
+        tableNotesListNavigationController.tabBarItem.title = "Notes"
+        tableNotesListNavigationController.navigationBar.prefersLargeTitles = true
+        tableNotesListNavigationController.navigationItem.largeTitleDisplayMode = .always
+        
+        let collectionNotesListNavigationController = UINavigationController(rootViewController: CollectionNotesListViewController())
+        collectionNotesListNavigationController.tabBarItem = UITabBarItem(tabBarSystemItem: .bookmarks, tag: 0)
+        collectionNotesListNavigationController.tabBarItem.badgeColor = .red
+        collectionNotesListNavigationController.tabBarItem.badgeValue = "new"
+        collectionNotesListNavigationController.navigationBar.prefersLargeTitles = true
+        collectionNotesListNavigationController.navigationItem.largeTitleDisplayMode = .always
+        
+        let createNoteNavigationController = UINavigationController(rootViewController: CreateNoteViewController())
+        createNoteNavigationController.tabBarItem = UITabBarItem(title: "Create", image: UIImage(systemName: "text.badge.plus"), tag: 0)
+        createNoteNavigationController.tabBarItem.title = "Create New"
+        createNoteNavigationController.navigationBar.prefersLargeTitles = true
+        createNoteNavigationController.navigationItem.largeTitleDisplayMode = .always
+
+        tabBarController.setViewControllers([tableNotesListNavigationController, collectionNotesListNavigationController, createNoteNavigationController], animated: true)
+        tabBarController.selectedViewController = tableNotesListNavigationController
+        
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
+        
+        let navigationBarAppearance = UINavigationBarAppearance()
+        navigationBarAppearance.configureWithDefaultBackground()
+        navigationBarAppearance.backgroundColor = .systemOrange
+        navigationBarAppearance.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ]
+        navigationBarAppearance.shadowColor = .black
+        
+        let navigationBarScrollAppearance = UINavigationBarAppearance()
+        navigationBarScrollAppearance.configureWithDefaultBackground()
+        navigationBarScrollAppearance.backgroundColor = .systemYellow
+        navigationBarScrollAppearance.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ]
+        navigationBarScrollAppearance.largeTitleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ]
+        navigationBarScrollAppearance.shadowColor = .black
+        
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithDefaultBackground()
+        tabBarAppearance.backgroundColor = .systemOrange
+        
+        UINavigationBar.appearance().standardAppearance = navigationBarAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = navigationBarScrollAppearance
+        
+        UITabBar.appearance().standardAppearance = tabBarAppearance
+        if #available(iOS 15.0, *) {
+            UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        }
+        
         return true
     }
-
-    // MARK: UISceneSession Lifecycle
-
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
-    }
-
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
-    }
-
 
 }
 
